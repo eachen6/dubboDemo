@@ -8,13 +8,18 @@
     <!--定义了提供方应用信息，用于计算依赖关系；在 dubbo-admin 或 dubbo-monitor 会显示这个名字，方便辨识-->
     <dubbo:application name="demotest-provider" owner="programmer" organization="dubbox"/>
     <!--使用 zookeeper 注册中心暴露服务，注意要先开启 zookeeper-->
-    <!--  <dubbo:registry address="172.80.2.205:2181" protocol="zookeeper"/>-->
+     <dubbo:registry address="172.80.2.205:2181" protocol="zookeeper" id="zk"/>
+     <import resource="classpath*:/applicationContext.xml" />
+	 <import resource="classpath*:/mybatis-config.xml" />
+	 <dubbo:monitor protocol="registry" />
     <!-- 用dubbo协议在20880端口暴露服务 -->
-    <!--  <dubbo:protocol name="dubbo" port="20880" />-->
+<!--      <dubbo:protocol name="dubbo" port="20880" /> -->
     <!-- 广播模式 -->
-       <dubbo:registry address="multicast://224.5.6.7:1234" />
-    <!--使用 dubbo 协议实现定义好的 api.PermissionService 接口-->
-    <dubbo:service interface="com.api.service.IUserService" ref="demoService" protocol="dubbo" />
+<!--        <dubbo:registry address="multicast://224.5.6.7:1234" />
+ -->    <!--使用 dubbo 协议实现定义好的 api.PermissionService 接口-->
+    <dubbo:service interface="com.api.service.IUserService" ref="userService" protocol="dubbo" registry="zk" />
+    <dubbo:service interface="com.api.service.InfoService" ref="infoService" protocol="dubbo" />
     <!--具体实现该接口的 bean-->
-    <bean id="demoService" class="com.provider.service.impl.UserServiceImpl"/>
+   <!--  <bean id="demoService" class="com.provider.service.impl.UserServiceImpl"/>
+    <bean id="infoService" class="com.provider.service.impl.InfoServiceImpl"/> -->
 </beans>
